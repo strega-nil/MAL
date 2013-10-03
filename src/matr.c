@@ -2,22 +2,29 @@
 #include <malloc.h>
 #include "matr.h"
 
-// INTERNAL FUNCTIONS
+#define TRUE 1
+#define FALSE 0
 
-int ArraySum(int len, int * array)
+// INTERNAL FUNCTIONS
+int IsRealMatrix(matrix mx)
 {
-	int sum = 0;
-	for(int i = 0; i < len; i++)
-		sum += array[i];
-	return sum;
+	if(mx.rows < 1 || mx.columns < 1)
+		return FALSE;
+	else
+		return TRUE;
 }
 
 
-matrix Initialize(int rows, int columns, int i)
+matrix Initialize(int rows, int columns)
 {
 	matrix mx;
 	mx.rows = rows;
 	mx.columns = columns;
+	if(!IsRealMatrix){
+		mx.rows = -1;
+		mx.columns = -1;
+		return mx;
+	}
 	// Initial Array
 	mx.mx = malloc(sizeof(int*) * mx.rows);
 	// Internal Arrays
@@ -26,24 +33,24 @@ matrix Initialize(int rows, int columns, int i)
 	// Initialize numbers
 	for ( int row = 0; row < mx.rows; row++)
 		for ( int col = 0; col < mx.columns; col++)
-			mx.mx[row][col] = i;
+			mx.mx[row][col] = 0;
 	return mx;
 }
 
 
-int Check(matrix m1, matrix m2, int mul)
+int IsValidOp(matrix m1, matrix m2, int mul)
 {
 	if (mul){
 		if ( m1.columns == m2.rows )
-			return 0;
+			return TRUE;
 		else
-			return 1;
+			return FALSE;
 	} else {
 		if (m1.columns == m2.columns 
 		    && m1.rows == m2.rows)
-			return 0;
+			return TRUE;
 		else
-			return 1;
+			return FALSE;
 	}
 }
 
@@ -51,7 +58,10 @@ int Check(matrix m1, matrix m2, int mul)
 
 matrix matrixInit(int rows, int columns)
 {
-	matrix mx = Initialize(rows, columns, 0);
+	matrix mx = Initialize(rows, columns);
+	if(!IsRealMatrix(mx)){
+		return mx;
+	}
 	// Set numbers
 	for ( int row = 0; row < mx.rows; row++)
 		for ( int col = 0; col < mx.columns; col++){
@@ -65,11 +75,18 @@ matrix matrixInit(int rows, int columns)
 
 int matrixPrint(matrix mx)
 {
-	printf("[\n");
+	printf("[");
 	for(int row = 0; row < mx.rows; row++){
+
+		if(row == 0)
+			printf("[ ");
+		else
+			printf("\n [ ");
+
 		for(int col = 0; col < mx.columns; col++)
-			printf(" %d", mx.mx[row][col]);
-		printf("\n");
+			printf("%d ", mx.mx[row][col]);
+
+		printf("]");
 	}
 	printf("]\n");
 	return 0;
@@ -78,10 +95,10 @@ int matrixPrint(matrix mx)
 
 matrix matrixAdd(matrix m1, matrix m2)
 {
-	if (Check(m1,m2,0))
-		return Initialize(0,0,0);
+	if (!IsValidOp(m1,m2,FALSE))
+		return Initialize(0,0);
 
-	matrix mx = Initialize(m1.rows, m1.columns, 0);
+	matrix mx = Initialize(m1.rows, m1.columns);
 
 	for(int row = 0; row < mx.rows; row++)
 		for(int col = 0; col < mx.columns; col++)
@@ -93,10 +110,10 @@ matrix matrixAdd(matrix m1, matrix m2)
 
 matrix matrixSub(matrix m1, matrix m2)
 {
-	if (Check(m1,m2,0))
-		return Initialize(0,0,0);
+	if (!IsValidOp(m1,m2,FALSE))
+		return Initialize(0,0);
 	
-	matrix mx = Initialize(m1.rows, m1.columns, 0);
+	matrix mx = Initialize(m1.rows, m1.columns);
 
 	for(int row = 0; row < mx.rows; row++)
 		for(int col = 0; col < mx.columns; col++)
@@ -106,22 +123,17 @@ matrix matrixSub(matrix m1, matrix m2)
 }
 
 
-
-
 matrix matrixMul(matrix m1, matrix m2)
 {
-	if (Check(m1,m2,0))
-		return Initialize(0,0,0);
+	if (!IsValidOp(m1,m2,TRUE))
+		return Initialize(0,0);
 		
-	matrix mx = Initialize(m1.rows, m2.columns, 0);
-	int * tmpArr = malloc(sizeof(int) * mx.columns);
+	matrix mx = Initialize(m1.rows, m2.columns);
 	for(int row = 0; row < mx.rows; row++)
 		for(int col = 0; col < mx.columns; col++)
 			for(int i = 0; i < m1.columns; i++){
-				tmpArr[i] = 
+				mx.mx[row][col] =
 				(m1.mx[row][i] * m2.mx[i][col]);
-				mx.mx[row][col] = 
-				(ArraySum(m1.columns, tmpArr));
 			}
 	return mx;
 }
