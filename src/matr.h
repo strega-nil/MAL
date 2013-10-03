@@ -11,5 +11,8 @@ int matrixPrint(matrix);
 matrix matrixAdd(matrix, matrix);
 matrix matrixSub(matrix, matrix);
 matrix matrixMul(matrix, matrix);
+matrix vectorMul(matrix, int);
+// NOT YET IMPLEMENTED //
+//matrix matrixParsedInit();
 
 #endif
