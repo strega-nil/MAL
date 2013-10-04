@@ -36,16 +36,16 @@ char * getString(int len)
 int main(void)
 {
 	matrix m1, m2, ans;
-	int vmult, mult, add, sub;
+	int smult, mult, add, sub;
 
-	int r1, c1, r2, c2, vec;
+	int r1, c1, r2, c2, sc;
 	printf("Which operation: ");
 	char * op = getString(5);
 
 	switch(op[0]){
-		case 'v':
-		case 'V':
-			vmult = TRUE;
+		case 'c':
+		case 'C':
+			smult = TRUE;
 			mult = FALSE;
 			add = FALSE;
 			sub = FALSE;
@@ -53,7 +53,7 @@ int main(void)
 		case 'm':
 		case 'M':
 		case '*':
-			vmult = FALSE;
+			smult = FALSE;
 			mult = TRUE;
 			add = FALSE;
 			sub = FALSE;
@@ -61,7 +61,7 @@ int main(void)
 		case 'a':
 		case 'A':
 		case '+':
-			vmult = FALSE;
+			smult = FALSE;
 			mult = FALSE;
 			add = TRUE;
 			sub = FALSE;
@@ -69,7 +69,7 @@ int main(void)
 		case 's':
 		case 'S':
 		case '-':
-			vmult = FALSE;
+			smult = FALSE;
 			mult = FALSE;
 			add = FALSE;
 			sub = TRUE;
@@ -85,7 +85,7 @@ int main(void)
 	printf("First matrix columns: ");
 	scanf("%d", &c1);
 
-	if(vmult){
+	if(smult){
 		r2 = r1;
 		c2 = c1;
 	} else{
@@ -94,7 +94,7 @@ int main(void)
 		printf("Second matrix columns: ");
 		scanf("%d", &c2);
 	}
-	if(vmult){
+	if(smult){
 	} else if(mult){
 		if(c1 != r2){
 			fprintf(stderr,"Error: %s\n",multErr);
@@ -119,17 +119,17 @@ int main(void)
 	m1 = matrixInit(r1, c1);
 	matrixPrint(m1);
 
-	if(vmult){
-		printf("VECTOR: ");
-		scanf("%d", &vec);
+	if(smult){
+		printf("SCALAR: ");
+		scanf("%d", &sc);
 	} else {
 		printf("MATRIX TWO: \n");
 		m2 = matrixInit(r2, c2);
 		matrixPrint(m2);
 	}
 
-	if(vmult){
-		ans = vectorMul(m1,vec);
+	if(smult){
+		ans = scalarMul(m1,sc);
 	} else if(mult){
 		ans = matrixMul(m1,m2);
 	} else if(add){

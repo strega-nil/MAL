@@ -67,8 +67,7 @@ void matrixParsedInit()
 	 * make a matrix using this.
 	 * a valid input, for example, would be:
 	 * "[[3, 4, 5]\n[2,3,4]\n[1,5,3]]"
-	 * That should be the only valid input, BUT, will be implemented
-	 * in the future without need of '\n's.
+	 * You should allow for strings both with and without '\n's.
 	 * If the input is invalid, return:
 	 * matrix {rows = -1, columns = -1}
 	 */
@@ -147,12 +146,12 @@ matrix matrixSub(matrix m1, matrix m2)
 }
 
 
-matrix vectorMul(matrix mx, int n)
+matrix scalarMul(matrix mx, int n)
 {
-	matrix vec = Initialize(mx.columns, mx.columns);
+	matrix sc = Initialize(mx.columns, mx.columns);
 	for(int i = 0; i < mx.columns; i++)
-		vec.mx[i][i] = n;
-	return matrixMul(mx, vec);
+		sc.mx[i][i] = n;
+	return matrixMul(mx, sc);
 }
 
 
