@@ -1,8 +1,8 @@
-all: main matr
-	clang obj/main.o obj/matr.o -o mar
+all: main mal
+	clang obj/main.o obj/mal.o -o mac
 
 main:
 	clang -Wall -c -std=c99 src/main.c -o obj/main.o
 
-matr:
-	clang -Wall -c -std=c99 src/matr.c -o obj/matr.o
+mal:
+	clang -Wall -c -std=c99 src/mal.c -o obj/mal.o

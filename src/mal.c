@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <malloc.h>
-#include "matr.h"
+#include "mal.h"
 
 #define TRUE 1
 #define FALSE 0
@@ -26,10 +26,10 @@ matrix Initialize(int rows, int columns)
 		return mx;
 	}
 	// Initial Array
-	mx.mx = malloc(sizeof(int*) * mx.rows);
+	mx.mx = malloc(sizeof(double*) * mx.rows);
 	// Internal Arrays
 	for ( int i = 0; i < mx.rows; i++)
-		mx.mx[i] = malloc(sizeof(int) * mx.columns);
+		mx.mx[i] = malloc(sizeof(double) * mx.columns);
 	// Initialize numbers
 	for ( int row = 0; row < mx.rows; row++)
 		for ( int col = 0; col < mx.columns; col++)
@@ -38,18 +38,30 @@ matrix Initialize(int rows, int columns)
 }
 
 
-int IsValidOp(matrix m1, matrix m2, int mul)
+int IsValidOp(matrix m1, matrix m2, char op)
 {
-	if (mul){
-		if ( m1.columns == m2.rows )
-			return TRUE;
-		else
-			return FALSE;
-	} else {
-		if (m1.columns == m2.columns 
-		    && m1.rows == m2.rows)
-			return TRUE;
-		else
+	switch (op){
+		case 'm':
+			if ( m1.columns == m2.rows )
+				return TRUE;
+			else
+				return FALSE;
+			break;
+		case 'a':
+		case 's':
+			if (m1.columns == m2.columns 
+			    && m1.rows == m2.rows)
+				return TRUE;
+			else
+				return FALSE;
+			break;
+		case 'i':
+			if(m1.rows == m1.columns)
+				return TRUE;
+			else
+				return FALSE;
+			break;
+		default:
 			return FALSE;
 	}
 }
@@ -84,7 +96,7 @@ matrix matrixInit(int rows, int columns)
 	for ( int row = 0; row < mx.rows; row++){
 		for ( int col = 0; col < mx.columns; col++){
 			printf("%d, %d: ", row, col);
-			scanf("%d", &mx.mx[row][col]);
+			scanf("%lf", &mx.mx[row][col]);
 		}
 	}
 			
@@ -103,7 +115,7 @@ int matrixPrint(matrix mx)
 			printf("\n [ ");
 
 		for(int col = 0; col < mx.columns; col++)
-			printf("%d ", mx.mx[row][col]);
+			printf("%g ", mx.mx[row][col]);
 
 		printf("]");
 	}
@@ -114,24 +126,21 @@ int matrixPrint(matrix mx)
 
 matrix matrixAdd(matrix m1, matrix m2)
 {
-	if (!IsValidOp(m1,m2,FALSE))
+	if (!IsValidOp(m1,m2,'a'))
 		return Initialize(0,0);
 
 	matrix mx = Initialize(m1.rows, m1.columns);
 
-	for(int row = 0; row < mx.rows; row++){
-		for(int col = 0; col < mx.columns; col++){
-			mx.mx[row][col] = 
-			(m1.mx[row][col] + m2.mx[row][col]);
-		}
-	}
+	for(int row = 0; row < mx.rows; row++)
+		for(int col = 0; col < mx.columns; col++)
+			mx.mx[row][col] = (m1.mx[row][col] + m2.mx[row][col]);
 	return mx;
 }
 
 
 matrix matrixSub(matrix m1, matrix m2)
 {
-	if (!IsValidOp(m1,m2,FALSE))
+	if (!IsValidOp(m1,m2,'s'))
 		return Initialize(0,0);
 	
 	matrix mx = Initialize(m1.rows, m1.columns);
@@ -146,7 +155,7 @@ matrix matrixSub(matrix m1, matrix m2)
 }
 
 
-matrix scalarMul(matrix mx, int n)
+matrix scalarMul(matrix mx, double n)
 {
 	matrix sc = Initialize(mx.columns, mx.columns);
 	for(int i = 0; i < mx.columns; i++)
@@ -157,7 +166,7 @@ matrix scalarMul(matrix mx, int n)
 
 matrix matrixMul(matrix m1, matrix m2)
 {
-	if (!IsValidOp(m1,m2,TRUE))
+	if (!IsValidOp(m1,m2,'m'))
 		return Initialize(0,0);
 		
 	matrix mx = Initialize(m1.rows, m2.columns);
@@ -170,4 +179,26 @@ matrix matrixMul(matrix m1, matrix m2)
 		}
 	}
 	return mx;
+}
+
+matrix matrixInv(matrix mx)
+{
+	if (!IsValidOp(mx,mx,'i'))
+		return Initialize(0,0);
+	if(mx.rows == 2){
+		double tmp;
+		double det = 1 / ((mx.mx[0][0] * mx.mx[1][1]) 
+		                 -(mx.mx[0][1] * mx.mx[1][0]));
+		// Now for the actual calculation
+		tmp = mx.mx[0][0];
+		mx.mx[0][0] = mx.mx[1][1];
+		mx.mx[1][1] = tmp;
+
+		mx.mx[0][1] = mx.mx[0][1] * (-1);
+		mx.mx[1][0] = mx.mx[1][0] * (-1);
+		// now just multiply by the determinant
+		return scalarMul(mx, det);
+	} else {
+		return Initialize(0,0);
+	}
 }

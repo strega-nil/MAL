@@ -1,5 +1,5 @@
 #include <malloc.h>
-#include "matr.h"
+#include "mal.h"
 
 #define TRUE 1
 #define FALSE 0
@@ -7,6 +7,7 @@
 char multErr[47] = "Multiplication: M1 columns, m2 rows not equal\n";
 char addErr[35] = "Addition: Dimensions do not equal\n";
 char subErr[38] = "Subtraction: Dimensions do not equal\n";
+char invErr[31] = "Inversion: Matrix not square.\n";
 char opErr[30] = "Operation: Not an operation\n";
 
 char * getString(int len)
@@ -36,7 +37,7 @@ char * getString(int len)
 int main(void)
 {
 	matrix m1, m2, ans;
-	int smult, mult, add, sub;
+	int smult, mult, add, sub, inv;
 
 	int r1, c1, r2, c2, sc;
 	printf("Which operation: ");
@@ -49,6 +50,7 @@ int main(void)
 			mult = FALSE;
 			add = FALSE;
 			sub = FALSE;
+			inv = FALSE;
 			break;
 		case 'm':
 		case 'M':
@@ -57,6 +59,7 @@ int main(void)
 			mult = TRUE;
 			add = FALSE;
 			sub = FALSE;
+			inv = FALSE;
 			break;
 		case 'a':
 		case 'A':
@@ -65,6 +68,7 @@ int main(void)
 			mult = FALSE;
 			add = TRUE;
 			sub = FALSE;
+			inv = FALSE;
 			break;
 		case 's':
 		case 'S':
@@ -73,6 +77,15 @@ int main(void)
 			mult = FALSE;
 			add = FALSE;
 			sub = TRUE;
+			inv = FALSE;
+			break;
+		case 'i':
+		case 'I':
+			smult = FALSE;
+			mult = FALSE;
+			add = FALSE;
+			sub = FALSE;
+			inv = TRUE;
 			break;
 		default:
 			fprintf(stderr,"Error: %s\n",opErr);
@@ -85,10 +98,10 @@ int main(void)
 	printf("First matrix columns: ");
 	scanf("%d", &c1);
 
-	if(smult){
+	if(smult || inv){
 		r2 = r1;
 		c2 = c1;
-	} else{
+	} else {
 		printf("Second matrix rows: ");
 		scanf("%d", &r2);
 		printf("Second matrix columns: ");
@@ -110,6 +123,11 @@ int main(void)
 			fprintf(stderr,"Error: %s\n",subErr);
 			return 1;
 		}
+	} else if(inv){
+		if(r1 != c1){
+			fprintf(stderr,"Error: %s\n",invErr);
+			return 1;
+		}
 	} else {
 		fprintf(stderr,"Error: Unknown\n");
 		return 3;
@@ -122,6 +140,7 @@ int main(void)
 	if(smult){
 		printf("SCALAR: ");
 		scanf("%d", &sc);
+	} else if (inv) {
 	} else {
 		printf("MATRIX TWO: \n");
 		m2 = matrixInit(r2, c2);
@@ -136,6 +155,8 @@ int main(void)
 		ans = matrixAdd(m1,m2);
 	} else if(sub){
 		ans = matrixSub(m1,m2);
+	} else if(inv){
+		ans = matrixInv(m1);
 	} else {
 		fprintf(stderr,"Error: Unknown");
 	}
