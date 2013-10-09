@@ -1,4 +1,4 @@
-MatrixArithmetic
+MAL
 ================
 
-Program for matrix arithmetic. Mostly just showcases the library behind it.
+Matrix Arithmetic Library. Also includes a program to showcase it.
