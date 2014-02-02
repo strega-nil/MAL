@@ -65,7 +65,7 @@ int isValidOp(matrix * m1, matrix * m2, char op)
 		case 'a':
 		case 's':
 			if (m1->columns == m2->columns
-				 && m1->rows == m2->rows)
+			    && m1->rows == m2->rows)
 				return TRUE;
 			else
 				return FALSE;

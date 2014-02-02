@@ -17,7 +17,7 @@
 	src/maw.c - Matrix Arithmetic Wrapper
 	This gives an example for how to use the library.
 	It probably isn't safe, so don't use it in production code.
-	It's also kinda terrible.
+	It's also kinda terrible. It doesn't error check AT ALL.
 	You can probably use it as just a calculator though...
 */
 
@@ -27,11 +27,7 @@
 #define TRUE 1
 #define FALSE 0
 
-char multErr[] = "Multiplication: M1 columns, m2 rows not equal\n";
-char addErr[] = "Addition: Dimensions do not equal\n";
-char subErr[] = "Subtraction: Dimensions do not equal\n";
-char invErr[] = "Inversion: Matrix not square.\n";
-char opErr[] = "Not an operation. Valid operations: 'a'ddition, 's'ubtraction, 'm'ultiplication, s'c'alar multiplication, 'i'nverse.\nOp: ";
+char opErr[] = "Invalid Op. Valid operations: 'a'ddition, 's'ubtraction, 'm'ultiplication, s'c'alar multiplication, 'i'nverse.";
 
 char getOp(char * op)
 {
@@ -61,17 +57,15 @@ char getOp(char * op)
 			case 'C':
 				return 'c';
 			default:
-				printf("%s", opErr);
+				printf("%s\n> ", opErr);
 				break;
 		}
 
-		while(TRUE){
-			ch = getchar();
-			if(ch == '\n'){
-				break;
-			}
-		}
+		/* Clear the stdin buffer */
+		while((ch = getchar()) != '\n')
+			;
 
+		/* Get the operation */
 		ch = getchar();
 
 	}
@@ -81,7 +75,7 @@ int main(int argc, char ** argv)
 {
 	char op;
 	char mStr[1024];
-	matrix * ans, * m1, * m2;
+	matrix *ans, *m1, *m2;
 	int sc = 0;
 
 	if(argc > 1){

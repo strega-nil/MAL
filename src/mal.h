@@ -13,8 +13,8 @@
 	<http://creativecommons.org/publicdomain/zero/1.0/>
 */
 
-#ifndef MAL_H
-#define MAL_H
+#ifndef _MAL_H
+#define _MAL_H
 
 typedef struct {
 	int rows, columns;
