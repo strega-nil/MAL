@@ -1,8 +1,8 @@
-all: main mal
-	clang obj/main.o obj/mal.o -o mac
+all: _maw _mal
+	clang obj/maw.o obj/mal.o -o maw
 
-main:
-	clang -Wall -c -std=c99 src/main.c -o obj/main.o
+_maw:
+	clang -Wall -Werror -ggdb3 -c -std=c99 src/maw.c -o obj/maw.o
 
-mal:
-	clang -Wall -c -std=c99 src/mal.c -o obj/mal.o
+_mal:
+	clang -Wall -Werror -ggdb3 -c -std=c99 src/mal.c -o obj/mal.o
