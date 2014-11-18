@@ -62,8 +62,7 @@ char getOp(char * op)
 		}
 
 		/* Clear the stdin buffer */
-		while((ch = getchar()) != '\n')
-			;
+		while((ch = getchar()) != '\n');
 
 		/* Get the operation */
 		ch = getchar();
@@ -89,11 +88,13 @@ int main(int argc, char ** argv)
 	printf("First matrix:\n");
 	scanf("%s", mStr);
 	m1 = MatrixInit(mStr);
+    MatrixPrint(m1);
 
 	if(op == 'a' || op == 's' || op == 'm'){
 		printf("Second matrix:\n");
 		scanf("%s", mStr);
 		m2 = MatrixInit(mStr);
+        MatrixPrint(m2);
 	} else if(op == 'c') {
 		printf("Scalar multiple:\n");
 		scanf("%d", &sc);

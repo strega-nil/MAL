@@ -22,66 +22,40 @@
 #include <stdio.h>
 #include <malloc.h>
 #include <stdlib.h>
+#include <stdbool.h>
 #include <ctype.h>
 #include "mal.h"
 
-#define TRUE 1
-#define FALSE 0
-
-/* INTERNAL FUNCTIONS */
-matrix * initialize(int rows, int columns)
+/* INTERNAL FUNCTION */
+matrix *initialize(int rows, int columns)
 {
 	if(rows < 1 || columns < 1){
 		return NULL;
 	}
-	matrix * mx = malloc((sizeof(int) * 2) + sizeof(double**));
+	matrix *mx = malloc(sizeof(matrix));
+    if(mx == NULL)
+        return NULL;
 	mx->rows = rows;
 	mx->columns = columns;
 	// Initial Array
-	mx->mx = malloc(sizeof(double*) * mx->rows);
+	mx->mx = calloc(mx->rows, sizeof(double*));
+    if(mx->mx == NULL){
+        free(mx);
+        return NULL;
+    }
 	// Internal Arrays
-	for ( int i = 0; i < mx->rows; i++)
-		mx->mx[i] = malloc(sizeof(double) * mx->columns);
-	// Initialize numbers
-	for ( int row = 0; row < mx->rows; row++)
-		for ( int col = 0; col < mx->columns; col++)
-			mx->mx[row][col] = 0;
+	for ( int i = 0; i < mx->rows; i++) {
+		mx->mx[i] = calloc(mx->columns, sizeof(double));
+        if (mx->mx[i] == NULL) {
+            for(i--; i >= 0; i--)
+                free(mx->mx[i]);
+            free(mx);
+            return NULL;
+        }
+    }
 	return mx;
 }
 
-
-int isValidOp(matrix * m1, matrix * m2, char op)
-{
-	switch (op){
-		// multiply
-		case 'm':
-			if ( m1->columns == m2->rows )
-				return TRUE;
-			else
-				return FALSE;
-			break;
-
-		// add or subtract
-		case 'a':
-		case 's':
-			if (m1->columns == m2->columns
-			    && m1->rows == m2->rows)
-				return TRUE;
-			else
-				return FALSE;
-			break;
-
-		// inverse
-		case 'i':
-			if(m1->rows == m1->columns)
-				return TRUE;
-			else
-				return FALSE;
-			break;
-		default:
-			return FALSE;
-	}
-}
 
 /* EXTERNAL FUNCTIONS */
 
@@ -118,7 +92,7 @@ matrix * MatrixInit(char * string)
 
 	// Putting the numbers where they belong
 	int x = 0, y = 0;
-	while(TRUE) {
+	while(true) {
 		string = string + 1;
 
 		if(string[0] == '\0'){
@@ -171,9 +145,8 @@ int MatrixPrint(matrix * mx)
 
 matrix * MatrixAdd(matrix * m1, matrix * m2)
 {
-	if (!isValidOp(m1,m2,'a')){
-		return NULL;
-	}
+    if (m1->columns != m2->columns || m1->rows != m2->rows)
+        return NULL;
 
 	matrix * mx = initialize(m1->rows, m1->columns);
 	if (mx == NULL){
@@ -190,14 +163,10 @@ matrix * MatrixAdd(matrix * m1, matrix * m2)
 
 matrix * MatrixSub(matrix * m1, matrix * m2)
 {
-	if (!isValidOp(m1,m2,'s')){
-		return NULL;
-	}
+    if (m1->columns != m2->columns || m1->rows != m2->rows)
+        return NULL;
 
 	matrix * mx = initialize(m1->rows, m1->columns);
-	if (mx == NULL){
-		return NULL;
-	}
 
 	for(int row = 0; row < mx->rows; row++){
 		for(int col = 0; col < mx->columns; col++){
@@ -226,9 +195,8 @@ matrix * MatrixSMul(matrix * mx, double n)
 
 matrix * MatrixMul(matrix * m1, matrix * m2)
 {
-	if (!isValidOp(m1,m2,'m')){
-		return NULL;
-	}
+    if(m1->columns != m2->rows)
+        return NULL;
 
 	matrix * mx = initialize(m1->rows, m2->columns);
 	if (mx == NULL){
@@ -248,9 +216,8 @@ matrix * MatrixMul(matrix * m1, matrix * m2)
 
 matrix * MatrixInv(matrix * mx)
 {
-	if (!isValidOp(mx,mx,'i')){
-		return NULL;
-	}
+    if(mx->rows != mx->columns)
+        return NULL;
 
 	if(mx->rows == 2){
 

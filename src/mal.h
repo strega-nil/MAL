@@ -18,7 +18,7 @@
 
 typedef struct {
 	int rows, columns;
-	double ** mx;
+	double **mx;
 } matrix;
 
 matrix * MatrixInit(char *);
