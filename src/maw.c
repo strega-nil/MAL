@@ -27,63 +27,21 @@
 #define TRUE 1
 #define FALSE 0
 
-char opErr[] = "Invalid Op. Valid operations: 'a'ddition, 's'ubtraction, 'm'ultiplication, s'c'alar multiplication, 'i'nverse.";
+char opErr[] = "Invalid Op. Valid operations: +, -, /, *, 'i'nv";
 
-char getOp(char *op)
+int main(void)
 {
-    char ch;
-
-    if(op != NULL){
-        ch = *op;
-    } else {
-        ch = getchar();
-    }
-
-    while(TRUE){
-        switch(ch){
-            case 'a':
-            case 'A':
-                return 'a';
-            case 's':
-            case 'S':
-                return 's';
-            case 'm':
-            case 'M':
-                return 'm';
-            case 'i':
-            case 'I':
-                return 'i';
-            case 'c':
-            case 'C':
-                return 'c';
-            default:
-                printf("%s\n> ", opErr);
-                break;
-        }
-
-        /* Clear the stdin buffer */
-        while((ch = getchar()) != '\n');
-
-        /* Get the operation */
-        ch = getchar();
-
-    }
-}
-
-int main(int argc, char *argv[])
-{
-    char op;
     char mStr[1024];
     matrix *ans, *m1, *m2;
     int sc = 0;
 
-    if(argc > 1){
-        op = getOp(argv[1]);
-    } else {
-        printf("Which operation: ");
-        op = getOp(NULL);
-    }
+    printf("Which operation: ");
+    char op = tolower(getchar());
 
+    while(op != '+' || op != '-' || op != '*' || op != '/' || op != 'i') {
+        puts(opErr);
+        op = tolower(getchar());
+    }
 
     printf("First matrix:\n");
     scanf("%s", mStr);

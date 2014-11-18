@@ -21,7 +21,7 @@
 #include "mal.h"
 #include <stdio.h>
 
-int test_exp(int b, int ex){
+int custom_exp(int b, int ex){
     int ret = 1;
     for(int i = 0; i < ex; i++){
         ret = ret * b;
@@ -90,7 +90,7 @@ int main()
 
     for(int i = 0; i < 2; i++){
         for(int j = 0; j < 3; j++){
-            if(m2->mx[i][j] != test_exp(10, (i * 3) + j)){
+            if(m2->mx[i][j] != custom_exp(10, (i * 3) + j)){
                 printf("MatrixInit(mchar): INCORRECT NUMBERS: mx[%d][%d]\n"
                     , i, j);
                 return -1;
