@@ -38,7 +38,7 @@ matrix *initialize(int rows, int columns)
     mx->rows = rows;
     mx->columns = columns;
     // Initial Array
-    mx->mx = calloc(mx->rows, sizeof(double*));
+    mx->mx = calloc(mx->rows, sizeof(double *));
     if(mx->mx == NULL){
         free(mx);
         return NULL;
@@ -59,7 +59,7 @@ matrix *initialize(int rows, int columns)
 
 /* EXTERNAL FUNCTIONS */
 
-matrix * MatrixInit(char * string)
+matrix *MatrixInit(char *string)
 {
     int num;
     int rows = 0;
@@ -85,7 +85,7 @@ matrix * MatrixInit(char * string)
         }
     }
 
-    matrix * mx = initialize(rows, cols);
+    matrix *mx = initialize(rows, cols);
     if (mx == NULL){
         return NULL;
     }
@@ -128,7 +128,7 @@ matrix * MatrixInit(char * string)
     return mx;
 }
 
-int MatrixPrint(matrix * mx)
+int MatrixPrint(matrix *mx)
 {
     for(int row = 0; row < mx->rows; row++){
         printf("[ ");
@@ -143,12 +143,12 @@ int MatrixPrint(matrix * mx)
 }
 
 
-matrix * MatrixAdd(matrix * m1, matrix * m2)
+matrix *MatrixAdd(matrix *m1, matrix *m2)
 {
     if (m1->columns != m2->columns || m1->rows != m2->rows)
         return NULL;
 
-    matrix * mx = initialize(m1->rows, m1->columns);
+    matrix *mx = initialize(m1->rows, m1->columns);
     if (mx == NULL){
         return NULL;
     }
@@ -161,12 +161,12 @@ matrix * MatrixAdd(matrix * m1, matrix * m2)
 }
 
 
-matrix * MatrixSub(matrix * m1, matrix * m2)
+matrix *MatrixSub(matrix *m1, matrix *m2)
 {
     if (m1->columns != m2->columns || m1->rows != m2->rows)
         return NULL;
 
-    matrix * mx = initialize(m1->rows, m1->columns);
+    matrix *mx = initialize(m1->rows, m1->columns);
 
     for(int row = 0; row < mx->rows; row++){
         for(int col = 0; col < mx->columns; col++){
@@ -178,27 +178,27 @@ matrix * MatrixSub(matrix * m1, matrix * m2)
 }
 
 
-matrix * MatrixSMul(matrix * mx, double n)
+matrix *MatrixSMul(matrix *mx, double n)
 {
-    matrix * sc = initialize(mx->columns, mx->columns);
+    matrix *sc = initialize(mx->columns, mx->columns);
     if (sc == NULL){
         return NULL;
     }
 
     for(int i = 0; i < mx->columns; i++){
-        sc->mx[i][i] = n;
+        sc->mx[i][i] *= n;
     }
 
     return MatrixMul(mx, sc);
 }
 
 
-matrix * MatrixMul(matrix * m1, matrix * m2)
+matrix *MatrixMul(matrix *m1, matrix *m2)
 {
     if(m1->columns != m2->rows)
         return NULL;
 
-    matrix * mx = initialize(m1->rows, m2->columns);
+    matrix *mx = initialize(m1->rows, m2->columns);
     if (mx == NULL){
         return NULL;
     }
@@ -214,14 +214,14 @@ matrix * MatrixMul(matrix * m1, matrix * m2)
     return mx;
 }
 
-matrix * MatrixInv(matrix * mx)
+matrix *MatrixInv(matrix *mx)
 {
     if(mx->rows != mx->columns)
         return NULL;
 
     if(mx->rows == 2){
 
-        matrix * inv = initialize(mx->rows, mx->columns);
+        matrix *inv = initialize(mx->rows, mx->columns);
         if(inv == NULL){
             return NULL;
         }
@@ -241,7 +241,7 @@ matrix * MatrixInv(matrix * mx)
     }
 }
 
-int MatrixFree(matrix * mx)
+int MatrixFree(matrix *mx)
 {
     for(int i = 0; i < mx->rows; i++){
         free(mx->mx[i]);

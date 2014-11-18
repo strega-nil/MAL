@@ -33,7 +33,7 @@ int test_exp(int b, int ex){
 int main()
 {
     /* Test MatrixInit */
-    matrix * m1 = MatrixInit("[0,1,2][3,4,5][6,7,8]");
+    matrix *m1 = MatrixInit("[0,1,2][3,4,5][6,7,8]");
 
     if(m1 == NULL){
         puts("MatrixInit(): NOT ALLOCATED");
@@ -67,7 +67,7 @@ int main()
     puts("MatrixInit(): SUCCESS");
 
     /* Test Matrix Init with Multiple Char Numbers */
-    matrix * m2 = MatrixInit("[1,10,100][1000,10000,100000]");
+    matrix *m2 = MatrixInit("[1,10,100][1000,10000,100000]");
 
     if(m2 == NULL){
         puts("MatrixInit(mchar): NOT ALLOCATED");

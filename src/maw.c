@@ -29,7 +29,7 @@
 
 char opErr[] = "Invalid Op. Valid operations: 'a'ddition, 's'ubtraction, 'm'ultiplication, s'c'alar multiplication, 'i'nverse.";
 
-char getOp(char * op)
+char getOp(char *op)
 {
     char ch;
 
@@ -70,7 +70,7 @@ char getOp(char * op)
     }
 }
 
-int main(int argc, char ** argv)
+int main(int argc, char *argv[])
 {
     char op;
     char mStr[1024];
