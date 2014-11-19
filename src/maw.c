@@ -22,10 +22,8 @@
 */
 
 #include <malloc.h>
+#include <ctype.h>
 #include "mal.h"
-
-#define TRUE 1
-#define FALSE 0
 
 char opErr[] = "Invalid Op. Valid operations: +, -, /, *, 'i'nv";
 
