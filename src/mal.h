@@ -28,6 +28,6 @@ matrix *MatrixSub(matrix *m1, matrix *m2);
 matrix *MatrixMul(matrix *m1, matrix *m2);
 matrix *MatrixSMul(matrix *m1, double scalar);
 matrix *MatrixInv(matrix *mx);
-int MatrixFree(matrix *mx);
+void MatrixFree(matrix *mx);
 
 #endif

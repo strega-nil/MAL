@@ -241,12 +241,18 @@ matrix *MatrixInv(matrix *mx)
     }
 }
 
-int MatrixFree(matrix *mx)
+void MatrixFree(matrix *mx)
 {
+    if(mx == NULL)
+        return;
+
     for(int i = 0; i < mx->rows; i++){
-        free(mx->mx[i]);
+        if(mx->mx[i] != NULL)
+            free(mx->mx[i]);
     }
-    free(mx->mx);
+
+    if(mx->mx != NULL)
+        free(mx->mx);
+
     free(mx);
-    return 0;
 }

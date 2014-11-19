@@ -28,10 +28,42 @@ void test_init();
 void test_init_schar();
 void test_init_mchar();
 
+void test_add();
+
 int main()
 {
     test_init();
+    test_add();
     return 0;
+}
+
+void test_add()
+{
+    matrix *m1 = MatrixInit("[0,1,2][3,4,5][6,7,8]");
+    matrix *m2 = MatrixInit("[0,1][2,3]");
+
+    matrix *ans = MatrixAdd(m1, m2);
+    assert("Two matrices of disparate sizes" && ans == NULL);
+
+    MatrixFree(m2);
+    MatrixFree(ans);
+
+    m2 = MatrixInit("[8,7,6][5,4,3][2,1,0]");
+
+    ans = MatrixAdd(m1, m2);
+    assert("ans is NULL" && ans != NULL);
+    assert("ans rows is wrong" && ans->rows == 3);
+    assert("ans columns is wrong" && ans->columns == 3);
+
+    for(int i = 0; i < 3; i++)
+        for(int j = 0; j < 3; j++)
+            assert("Didn't add correctly" && ans->mx[i][j] == 8);
+
+    MatrixFree(m1);
+    MatrixFree(m2);
+    MatrixFree(ans);
+
+    puts("MatrixAdd(): Success");
 }
 
 void test_init_schar()
@@ -46,6 +78,7 @@ void test_init_schar()
         for(int j = 0; j < 3; j++)
             assert("Incorrect numbers" &&
                 mx->mx[i][j] == (i * 3) + j);
+    MatrixFree(mx);
 }
 
 void test_init_mchar()
@@ -61,6 +94,7 @@ void test_init_mchar()
         for(int j = 0; j < 3; j++)
             assert("Incorrect numbers" &&
                 mx->mx[i][j] == custom_exp(10, (i * 3) + j));
+    MatrixFree(mx);
 }
 
 void test_init()
