@@ -189,7 +189,9 @@ matrix *MatrixSMul(matrix *mx, double n)
         sc->mx[i][i] *= n;
     }
 
-    return MatrixMul(mx, sc);
+    matrix *ret = MatrixMul(mx, sc);
+    free(sc);
+    return ret;
 }
 
 
@@ -235,7 +237,9 @@ matrix *MatrixInv(matrix *mx)
 
         inv->mx[0][1] = mx->mx[0][1] * (-1);
         inv->mx[1][0] = mx->mx[1][0] * (-1);
-        return MatrixSMul(mx, det);
+        matrix *ret = MatrixSMul(mx, det);
+        free(inv);
+        return ret;
     } else {
         return NULL;
     }
